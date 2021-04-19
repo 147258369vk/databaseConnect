@@ -50,3 +50,58 @@ module.exports.getAll=(req,res)=>{
         })
     })
 }
+
+module.exports.selectedData = (req,res)=>{
+    const uid = req.params.userid;
+
+    UserData.findById({_id:uid}).then((docs)=>{
+        return res.status(200).json({
+            success:true,
+            message:'Record found',
+            data:docs
+        })
+    })
+    .catch((err)=>{
+        return res.status(401).json({
+            success:false,
+            message:'no record found',
+            error:err.message
+        })
+    })
+}
+
+// UserData.findOne({name:req.params.username}).skip(1).sort({name:1})
+
+
+module.exports.updatedData=(req,res)=>{
+    
+    // var updatedData={
+    //     name:req.body.uname,
+    //     email:req.body.email,
+    //     contact:req.body.contact,
+    //     address:req.body.add
+    // }
+
+    var updatedData = req.body;
+
+    // const id=req.params.id;
+    UserData.findByIdAndUpdate({_id:req.params.id},{$set:updatedData},{new:true})
+    .then((docs)=>{
+        return res.status(200).json({
+            success:true,
+            message:'Data updated',
+            data:docs
+        })
+        .catch((err)=>{
+            return res.status(401).json({
+                success:false,
+                message:'Error in updating data',
+                err:err.message
+            })
+        })
+    })
+
+}
+
+
+
