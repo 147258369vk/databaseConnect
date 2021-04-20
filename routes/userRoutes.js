@@ -8,5 +8,13 @@ approute.get('/allusers',myctrl.getAll);
 approute.get('/selectRecord/:userid',myctrl.selectedData);
 approute.put('/updateRecord/:id',myctrl.updatedData);
 
+//register
+
+approute.post('/reg',myctrl.registerData);
+
+
+//admin
+
+approute.post('/admin',myctrl.addAdmin);
 module.exports = approute;
 
