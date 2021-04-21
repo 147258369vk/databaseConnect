@@ -16,5 +16,7 @@ approute.post('/reg',myctrl.registerData);
 //admin
 
 approute.post('/admin',myctrl.addAdmin);
+approute.post('/auth',myctrl.authenticate);
+
 module.exports = approute;
 

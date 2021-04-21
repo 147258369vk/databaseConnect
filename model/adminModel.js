@@ -37,8 +37,19 @@ adminSchema.pre('save',function(next){
 
 });
 
-adminSchema.methods.verifyPassword=(password)=>{
-    return bcrypt.compareSync(password,this.password);
-}
+// adminSchema.methods.verifyPassword=(password)=>{
+//  bcrypt.compare(password,this.password,(err,result)=>{
+//      if(err)
+//      return err;
+//      else 
+//      {
+//      return result;
+//      }
+//  })
+// }
+
+    adminSchema.methods.verifyPassword = function(password){
+        return bcrypt.compareSync(password,this.password);
+    }
 
 mongoose.model('admin',adminSchema);

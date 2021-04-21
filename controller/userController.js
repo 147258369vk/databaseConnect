@@ -1,7 +1,11 @@
 require('../model/userModel');
 require('../model/registerModel');
 require('../model/adminModel');
+require('../config/passportConfig');
 const mongoose = require('mongoose');
+const passport = require('passport');
+
+const jwt = require('jsonwebtoken');
 
 var UserData=mongoose.model('user');
 var regData=mongoose.model('register');
@@ -89,7 +93,7 @@ module.exports.updatedData=(req,res)=>{
 
     var updatedData = req.body;
 
-    // const id=req.params.id;
+    // constid =req.params.id;
     UserData.findByIdAndUpdate({_id:req.params.id},{$set:updatedData},{new:true})
     .then((docs)=>{
         return res.status(200).json({
@@ -160,5 +164,19 @@ module.exports.addAdmin=(req,res)=>{
             error:err.message
         })
     })
+}
+
+
+//to check authentication
+
+module.exports.authenticate=(req,res,next)=>{
+    passport.authenticate('local',(err,user,info)=>{
+        if(err) return res.status(404).json(err);
+        if(user) return res.status(200).json({
+            "token":jwt.sign({_id:user._id},"SecretToken",{expiresIn:'20m'}),
+            "user":user
+        });
+        if(info) return res.status(401).json(info);
+    })(req,res,next)
 }
 
