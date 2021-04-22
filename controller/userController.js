@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 var UserData=mongoose.model('user');
 var regData=mongoose.model('register');
@@ -180,3 +181,21 @@ module.exports.authenticate=(req,res,next)=>{
     })(req,res,next)
 }
 
+
+module.exports.userProfile=(req,res,next)=>{
+    const id=req._id;
+    adminData.find({_id:id}).then((docs)=>{
+        return res.status(200).json({
+            success:true,
+            message:'user record found',
+            data:_.pick(docs,['name'])
+        })
+    })
+    .catch((err)=>{
+        return res.status(401).json({
+            sucess:false,
+            message:'Error finding records',
+            error:err.message
+        })
+    })
+}

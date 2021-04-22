@@ -1,6 +1,7 @@
 var express = require('express');
 
 var myctrl = require('../controller/userController');
+var jwt=require('../config/jwtHelper');
 var approute=express.Router();
 
 approute.post('/newUser',myctrl.addnew);
@@ -17,6 +18,7 @@ approute.post('/reg',myctrl.registerData);
 
 approute.post('/admin',myctrl.addAdmin);
 approute.post('/auth',myctrl.authenticate);
+approute.get('/profile',jwt.verifyJwtToken,myctrl.userProfile);
 
 module.exports = approute;
 
